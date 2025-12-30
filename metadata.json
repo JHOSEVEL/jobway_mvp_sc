@@ -1,0 +1,7 @@
+{
+  "name": "JOBWAY - Recrutamento Inteligente em SC",
+  "description": "Plataforma MVP de recrutamento focada no mercado de Santa Catarina, conectando PMEs a talentos locais via IA e geolocalização.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
