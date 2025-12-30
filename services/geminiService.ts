@@ -6,20 +6,19 @@ export const simulateMatch = async (jobData: any, candidateData: any): Promise<M
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
-      model: "gemini-3-pro-preview",
-      contents: `Você é um Recrutador Técnico Sênior especializado no mercado de Santa Catarina (SC).
-      Sua missão é realizar um match ultra-preciso entre uma vaga e um candidato, considerando:
+      model: 'gemini-2.5-flash-lite-latest',
+      contents: `Você é um Recrutador Especialista de Santa Catarina. Analise o match entre esta VAGA e este CANDIDATO.
       
-      1. EXPERIÊNCIA E FORMAÇÃO (Peso 40%): Relevância do cargo e tempo de mercado.
-      2. PROJETOS PESSOAIS E PORTFÓLIO (Peso 25%): Analise projetos práticos, links de GitHub, apps ou soluções reais citadas pelo candidato. Valorize a iniciativa técnica.
-      3. CERTIFICAÇÕES (Peso 15%): Certificações de mercado (Cloud, Gestão, Linguagens) agregam valor ao score.
-      4. SOFT SKILLS E CULTURA (Peso 10%): Alinhamento com os valores descritos.
-      5. GEOLOCALIZAÇÃO (Peso 10%): Proximidade com a cidade de SC descrita na vaga.
+      IMPORTANTE: Considere com peso extra:
+      1. PROJETOS PESSOAIS: Portfólios, links GitHub, projetos reais realizados.
+      2. CERTIFICAÇÕES: Certificados técnicos, cursos de especialização, licenças.
+      3. EXPERIÊNCIA: Relevância dos cargos anteriores.
+      4. GEOLOCALIZAÇÃO: Proximidade com ${jobData.city}.
 
       VAGA: ${JSON.stringify(jobData)}
       CANDIDATO: ${JSON.stringify(candidateData)}
       
-      Gere um parecer crítico que explique como os projetos e certificações do candidato impactaram (ou poderiam impactar) o score final.`,
+      Explique explicitamente no 'aiInsight' como os projetos e certificações influenciaram o score.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -71,11 +70,11 @@ export const parseResume = async (base64Data: string, mimeType: string) => {
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: 'gemini-2.5-flash-lite-latest',
       contents: {
         parts: [
           { inlineData: { data: base64Data, mimeType: mimeType } },
-          { text: "Extraia nome, e-mail, principal competência, experiências, formação, CERTIFICAÇÕES e PROJETOS PESSOAIS/PORTFÓLIO." }
+          { text: "Extraia nome, e-mail, principal competência, experiências, formação, CERTIFICAÇÕES e links de PROJETOS/GITHUB." }
         ]
       },
       config: {

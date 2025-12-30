@@ -111,6 +111,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
 
         if (error) throw error;
         
+        // Atualiza estado local removendo a vaga deletada
         const remainingJobs = jobs.filter(j => j.id !== selectedJobId);
         setJobs(remainingJobs);
         setSelectedJobId(remainingJobs.length > 0 ? remainingJobs[0].id : null);
@@ -197,7 +198,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
     <div className="pt-32 pb-24 bg-slate-50 min-h-screen animate-fade-in text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Modal de Análise IA Profunda */}
+        {/* Modal de Análise IA Detalhada */}
         {isAnalysisModalOpen && selectedAnalysis && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
             <div className="bg-white w-full max-w-4xl rounded-[3rem] p-8 md:p-12 shadow-2xl overflow-y-auto max-h-[90vh] relative">
@@ -280,7 +281,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
           </div>
         )}
 
-        {/* Modal de Edição (CORRIGIDO) */}
+        {/* Modal de Edição */}
         {isEditing && editFormData && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
             <div className="bg-white w-full max-w-2xl rounded-[3rem] p-10 shadow-2xl overflow-y-auto max-h-[90vh]">
@@ -291,7 +292,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
               
               <form onSubmit={handleUpdateJob} className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Título do Cargo</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Título do Cargo</label>
                   <input 
                     required
                     type="text" 
@@ -303,7 +304,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Salário</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Salário</label>
                     <input 
                       type="text" 
                       value={editFormData.salary}
@@ -312,7 +313,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Modelo</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Modelo</label>
                     <select 
                       value={editFormData.job_type}
                       onChange={e => setEditFormData({...editFormData, job_type: e.target.value})}
@@ -326,7 +327,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Cidade em SC</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Cidade em SC</label>
                   <input 
                     type="text" 
                     value={editFormData.city}
@@ -336,7 +337,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Descrição</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Descrição</label>
                   <textarea 
                     rows={4}
                     value={editFormData.description}
@@ -366,7 +367,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
           </div>
         )}
 
-        {/* Header de Identidade da Empresa */}
+        {/* Header da Empresa */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100">
           <div className="flex items-center gap-6">
             <img 
@@ -375,7 +376,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
               className="w-24 h-24 rounded-3xl border-4 border-slate-50 shadow-xl"
             />
             <div>
-              <div className="inline-block bg-brand-dark text-white px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest mb-2">Empresa Ativa em SC</div>
+              <div className="inline-block bg-brand-dark text-white px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest mb-2">Empresa em SC</div>
               <h1 className="text-4xl font-[900] text-slate-900 tracking-tight">{companyName}</h1>
               <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1">📍 Sede: {companyCity}</p>
             </div>
@@ -393,12 +394,12 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
               onClick={() => onNavigate('post-job')}
               className="bg-brand-green text-slate-900 px-8 py-4 rounded-2xl font-black text-sm hover:bg-brand-greenDark transition-all shadow-lg shadow-brand-green/20 flex items-center justify-center gap-2"
             >
-              <span>+</span> Publicar Nova Vaga
+              <span>+</span> Publicar Vaga
             </button>
           </div>
         </div>
 
-        {/* Barra de Ferramentas e Seletor de Vaga */}
+        {/* Gestor de Vagas */}
         <div className="bg-brand-dark rounded-[2.5rem] p-8 shadow-xl mb-12 flex flex-col md:flex-row items-center justify-between gap-6 text-white">
           <div className="flex flex-col">
             <h2 className="text-2xl font-black tracking-tight flex items-center gap-3">
@@ -409,7 +410,7 @@ const DashboardCompany: React.FC<Props> = ({ onNavigate, profile }) => {
           
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
             <div className="flex items-center gap-4 bg-white/10 p-2 rounded-2xl border border-white/5 w-full sm:w-auto">
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Vaga Atual:</span>
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Vaga:</span>
               <select 
                 className="bg-transparent border-none rounded-lg px-4 py-2 font-black text-brand-green outline-none text-sm cursor-pointer min-w-[200px]"
                 value={selectedJobId || ''}
